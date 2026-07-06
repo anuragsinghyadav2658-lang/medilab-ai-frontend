@@ -51,13 +51,17 @@ const Login = () => {
       : { fullName: name, email, password };
 
     try {
-      const response = await fetch(`http://localhost:8080${endpoint}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `https://medilab-ai-backend.onrender.com${endpoint}`,
+
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
         },
-        body: JSON.stringify(payload),
-      });
+      );
 
       // Handle JSON ya plain text response gracefully
       const contentType = response.headers.get("content-type");

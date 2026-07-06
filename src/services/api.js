@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://medilab-ai-backend.onrender.com/api/reports';
+const BASE_URL = 'https://medilab-ai-backend.onrender.com';
 
 // 1. Nayi actual file (PDF/Image) backend me save karne ke liye
 export const uploadReport = async (formData) => {

@@ -39,7 +39,7 @@ const Settings = () => {
 
       try {
         const response = await fetch(
-          "http://localhost:8080/api/users/profile",
+          "https://medilab-ai-backend.onrender.com/api/users/profile",
           {
             method: "GET",
             headers: {
@@ -89,18 +89,22 @@ const Settings = () => {
 
     try {
       // Yahan hum PUT request bhejenge naye data ke sath
-      const response = await fetch("http://localhost:8080/api/users/profile", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      const response = await fetch(
+        "https://medilab-ai-backend.onrender.com/api/users/profile",
+
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            name: editedProfile.fullName,
+            email: editedProfile.email, // Email generally edit nahi karne dena chahiye, par abhi ke liye bhej rahe hain
+            phone: editedProfile.phone,
+          }),
         },
-        body: JSON.stringify({
-          name: editedProfile.fullName,
-          email: editedProfile.email, // Email generally edit nahi karne dena chahiye, par abhi ke liye bhej rahe hain
-          phone: editedProfile.phone,
-        }),
-      });
+      );
 
       if (response.ok) {
         setProfile(editedProfile); // Original state ko update kar do
@@ -127,7 +131,8 @@ const Settings = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/api/users/preferences/email-alerts",
+        "https://medilab-ai-backend.onrender.com/api/users/preferences/email-alerts",
+
         {
           method: "PUT",
           headers: {
@@ -174,7 +179,8 @@ const Settings = () => {
 
     try {
       const response = await fetch(
-        "http://localhost:8080/api/users/change-password",
+        "https://medilab-ai-backend.onrender.com/api/users/change-password",
+
         {
           method: "PUT",
           headers: {
