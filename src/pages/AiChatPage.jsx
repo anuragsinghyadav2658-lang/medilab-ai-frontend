@@ -439,13 +439,14 @@ const AiChatPage = () => {
                 onClick={() => setIsHistoryOpen(false)}
               ></div>
 
-              <motion.div
+                            <motion.div
                 initial={{ x: "100%", opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "100%", opacity: 0 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute top-0 right-0 h-full w-72 bg-navy-light border-l border-navy-lightest shadow-[0_0_40px_rgba(0,0,0,0.5)] md:shadow-[-10px_0_30px_rgba(0,0,0,0.15)] z-50 flex flex-col"
+                className="absolute top-0 right-0 h-full w-[85%] max-w-72 bg-navy-light border-l border-navy-lightest shadow-[0_0_40px_rgba(0,0,0,0.5)] md:shadow-[-10px_0_30px_rgba(0,0,0,0.15)] z-50 flex flex-col"
               >
+
                 {/* Panel Header */}
                 <div className="p-4 border-b border-navy-lightest flex items-center justify-between">
                   <h3 className="text-white font-bold flex items-center gap-2">
@@ -494,18 +495,19 @@ const AiChatPage = () => {
                           key={rowKey}
                           className="relative group w-full flex items-center"
                         >
-                          {/* Main Chat Load Button */}
+                                                    {/* Main Chat Load Button */}
                           <button
                             onClick={() => {
                               if (chat.id) loadChat(chat.id);
                               setIsHistoryOpen(false);
                             }}
-                            className={`flex-1 flex items-center gap-3 text-left p-3 rounded-xl transition-all text-sm pr-10 w-full border ${
+                            className={`flex-1 flex items-center gap-2 md:gap-3 text-left p-3 rounded-xl transition-all text-sm pr-8 w-full border overflow-hidden ${
                               String(currentChatId) === String(chat.id)
                                 ? "bg-mint/10 border-mint text-mint shadow-mint-glow font-medium"
                                 : "bg-navy/30 border-transparent text-gray-400 hover:bg-navy-light hover:border-navy-lightest hover:text-gray-200"
                             }`}
                           >
+
                             <MessageSquare
                               size={16}
                               className={`flex-shrink-0 ${
