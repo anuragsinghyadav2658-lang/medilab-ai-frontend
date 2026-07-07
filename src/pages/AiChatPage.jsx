@@ -375,7 +375,7 @@ const AiChatPage = () => {
     <div className="max-w-5xl mx-auto h-[85vh] flex bg-glass-navy backdrop-blur-md border border-navy-lightest rounded-2xl shadow-glass overflow-hidden transition-all duration-300">
       {/* RIGHT SIDE: Main Chat Area */}
       <div
-        className={`flex-1 flex flex-col relative transition-all duration-300 ${isHistoryOpen ? "pr-72" : "w-full"}`}
+        className={`flex-1 flex flex-col relative transition-all duration-300 ${isHistoryOpen ? "md:pr-72" : "w-full"}`}
       >
         {/* Header */}
         <div className="bg-navy-light/60 p-4 border-b border-navy-lightest flex items-center gap-3 relative z-10">
@@ -435,15 +435,16 @@ const AiChatPage = () => {
             <>
               {/* NAYA OVERLAY: Screen par bahar kahin bhi click karne par panel close karne ke liye */}
               <div
-                className="absolute inset-0 z-30"
+                className="absolute md:static inset-0 z-40 bg-black/50 md:bg-transparent backdrop-blur-[2px] md:backdrop-blur-none"
                 onClick={() => setIsHistoryOpen(false)}
               ></div>
+
               <motion.div
                 initial={{ x: "100%", opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "100%", opacity: 0 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
-                className="absolute top-0 right-0 h-full w-72 bg-navy-light border-l border-navy-lightest shadow-[-10px_0_30px_rgba(0,0,0,0.15)] z-40 flex flex-col"
+                className="absolute top-0 right-0 h-full w-72 bg-navy-light border-l border-navy-lightest shadow-[0_0_40px_rgba(0,0,0,0.5)] md:shadow-[-10px_0_30px_rgba(0,0,0,0.15)] z-50 flex flex-col"
               >
                 {/* Panel Header */}
                 <div className="p-4 border-b border-navy-lightest flex items-center justify-between">
