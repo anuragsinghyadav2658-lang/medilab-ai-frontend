@@ -762,10 +762,10 @@ const AiChatPage = () => {
         </div>
 
         {/* Input Area */}
-        <div className="p-4 bg-navy-light/60 border-t border-navy-lightest relative z-10">
+        <div className="p-4 bg-navy-light/60 border-t border-navy-lightest relative z-10 w-full">
           <form
             onSubmit={handleSendMessage}
-            className="flex items-center gap-2 bg-navy border border-navy-lightest rounded-xl p-1.5 focus-within:border-mint/50 focus-within:ring-1 focus-within:ring-mint/50 transition-all"
+            className="flex items-center gap-2 bg-navy border border-navy-lightest rounded-xl p-1.5 focus-within:border-mint/50 focus-within:ring-1 focus-within:ring-mint/50 transition-all w-full"
           >
             <input
               type="text"
@@ -774,7 +774,7 @@ const AiChatPage = () => {
               placeholder={
                 isListening ? "Listening..." : "Type your health query here..."
               }
-              className="flex-1 bg-transparent border-none text-white px-3 py-2 text-sm focus:outline-none focus:ring-0 placeholder-gray-500"
+              className="flex-1 bg-transparent border-none text-white px-3 py-2 text-sm focus:outline-none focus:ring-0 placeholder-gray-500 min-w-0"
               disabled={isLoading}
             />
 
@@ -783,7 +783,7 @@ const AiChatPage = () => {
               type="button"
               onClick={handleMicClick}
               disabled={isLoading}
-              className={`p-2.5 rounded-lg transition-all duration-300 flex items-center justify-center ${
+              className={`p-2.5 rounded-lg transition-all duration-300 flex items-center justify-center flex-shrink-0 ${
                 isListening
                   ? "bg-red-500/20 text-red-500 animate-pulse shadow-[0_0_10px_rgba(239,68,68,0.5)]"
                   : "bg-transparent text-gray-400 hover:text-mint hover:bg-mint-tint"
@@ -797,7 +797,7 @@ const AiChatPage = () => {
             <button
               type="submit"
               disabled={!input.trim() || isLoading}
-              className={`p-2.5 rounded-lg transition-all flex items-center justify-center ${
+              className={`p-2.5 rounded-lg transition-all flex items-center justify-center flex-shrink-0 ${
                 input.trim() && !isLoading
                   ? "bg-mint text-navy shadow-mint-glow hover:scale-105"
                   : "bg-navy-light text-gray-500 cursor-not-allowed"

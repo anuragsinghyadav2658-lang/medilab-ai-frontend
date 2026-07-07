@@ -1,21 +1,19 @@
-import axios from 'axios';
+import axios from "axios";
 
-const BASE_URL = 'https://medilab-ai-backend.onrender.com/api/reports';
-
-
+const BASE_URL = "https://medilab-ai-backend.onrender.com/api/reports";
 
 // 1. Nayi actual file (PDF/Image) backend me save karne ke liye
 export const uploadReport = async (formData) => {
   try {
     const response = await axios.post(`${BASE_URL}/upload`, formData, {
       headers: {
-        'Content-Type': 'multipart/form-data',
+        "Content-Type": "multipart/form-data",
       },
     });
     return response.data;
   } catch (error) {
     console.error("Error uploading report:", error);
-    throw error; 
+    throw error;
   }
 };
 
@@ -34,7 +32,7 @@ export const fetchReports = async () => {
 export const chatWithAi = async (message) => {
   try {
     const response = await axios.post(`${BASE_URL}/chat`, { message });
-    return response.data; 
+    return response.data;
   } catch (error) {
     console.error("Error in AI chat:", error);
     throw error;
