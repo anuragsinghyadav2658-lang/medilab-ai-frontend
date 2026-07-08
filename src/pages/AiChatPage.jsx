@@ -360,6 +360,20 @@ const AiChatPage = () => {
     setMessages((prev) => [...prev, newUserMsg]);
     setIsLoading(true);
 
+    // NAYA LOGIC: Agar ye pehla message hai aur report name nahi hai, toh title update karo
+    if (
+      messages.length === 1 &&
+      !localStorage.getItem("medilab_uploaded_report_name")
+    ) {
+      setChatSessions((prev) =>
+        prev.map((chat) =>
+          chat.id === currentChatId
+            ? { ...chat, title: userMessage.slice(0, 25) + "..." }
+            : chat,
+        ),
+      );
+    }
+
     try {
       // Backend API Call
       const aiResponseText = await chatWithAi(userMessage);
