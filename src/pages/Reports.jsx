@@ -76,13 +76,16 @@ const Reports = () => {
     getReports();
   }, []);
 
-    // Hook 2: Jab bhi selectedReport change ho tab vitals update karo aur console me dikhao
+  // Hook 2: Jab bhi selectedReport change ho tab vitals update karo aur console me dikhao
   useEffect(() => {
     if (selectedReport) {
       extractVitals(selectedReport.aiSummary);
       console.log("Selected AI Summary:", selectedReport.aiSummary);
       // NAYI LINE: File ka naam chat ke liye save kar rahe hain
-      localStorage.setItem("medilab_uploaded_report_name", selectedReport.fileName);
+      localStorage.setItem(
+        "medilab_uploaded_report_name",
+        selectedReport.fileName,
+      );
     }
   }, [selectedReport]);
 

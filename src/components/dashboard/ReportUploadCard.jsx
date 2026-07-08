@@ -1,13 +1,13 @@
-import React, { useState, useRef } from 'react';
-import { UploadCloud, File, X, Loader2 } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { uploadReport } from '../../services/api'; 
+import React, { useState, useRef } from "react";
+import { UploadCloud, File, X, Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { uploadReport } from "../../services/api";
 
 const ReportUploadCard = () => {
   const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState(null);
-  const [isUploading, setIsUploading] = useState(false); 
-  
+  const [isUploading, setIsUploading] = useState(false);
+
   const inputRef = useRef(null);
 
   const handleDrag = (e) => {
@@ -45,28 +45,32 @@ const ReportUploadCard = () => {
   const removeFile = (e) => {
     e.stopPropagation();
     setFile(null);
-    if (inputRef.current) inputRef.current.value = '';
+    if (inputRef.current) inputRef.current.value = "";
   };
 
   // API Call logic - Ab JSON ki jagah FormData use ho raha hai
   const handleUploadAndAnalyze = async () => {
     if (!file) return;
-    
+
     setIsUploading(true);
     try {
       // Asli file ko FormData me append karna
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
       await uploadReport(formData);
-      alert('Report Uploaded & Analyzed Successfully!');
-      
+
+      // NAYI LINE: Upload hote hi file ka naam localStorage me save kar do
+      // Taaki AI Chat bina single click kiye turant isko pakad le!
+      localStorage.setItem("medilab_uploaded_report_name", file.name);
+
+      alert("Report Uploaded & Analyzed Successfully!");
+
       // Success ke baad UI reset karna
       setFile(null);
-      if (inputRef.current) inputRef.current.value = '';
-      
+      if (inputRef.current) inputRef.current.value = "";
     } catch (error) {
-      alert('Error uploading report. Backend check karo!');
+      alert("Error uploading report. Backend check karo!");
       console.error(error);
     } finally {
       setIsUploading(false);
@@ -74,17 +78,21 @@ const ReportUploadCard = () => {
   };
 
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       className="bg-glass-navy backdrop-blur-md border border-navy-lightest p-6 rounded-2xl shadow-glass w-full"
     >
-      <h2 className="text-lg font-semibold text-white mb-4">Upload Medical Report</h2>
-      
+      <h2 className="text-lg font-semibold text-white mb-4">
+        Upload Medical Report
+      </h2>
+
       <div
         className={`relative border-2 border-dashed rounded-xl p-8 text-center transition-colors cursor-pointer ${
-          dragActive ? 'border-mint bg-mint-tint' : 'border-navy-lightest hover:border-mint/50'
+          dragActive
+            ? "border-mint bg-mint-tint"
+            : "border-navy-lightest hover:border-mint/50"
         }`}
         onDragEnter={handleDrag}
         onDragLeave={handleDrag}
@@ -92,14 +100,14 @@ const ReportUploadCard = () => {
         onDrop={handleDrop}
         onClick={!file ? onButtonClick : undefined}
       >
-        <input 
+        <input
           ref={inputRef}
-          type="file" 
-          className="hidden" 
+          type="file"
+          className="hidden"
           onChange={handleChange}
-          accept=".pdf,.png,.jpg,.jpeg" 
+          accept=".pdf,.png,.jpg,.jpeg"
         />
-        
+
         {!file ? (
           <div className="flex flex-col items-center gap-2 pointer-events-none">
             <UploadCloud size={40} className="text-mint animate-bounce" />
@@ -111,10 +119,12 @@ const ReportUploadCard = () => {
           <div className="flex items-center justify-between bg-navy p-3 rounded-lg border border-mint/20 cursor-default">
             <div className="flex items-center gap-2 text-mint">
               <File size={20} />
-              <span className="text-sm truncate max-w-[200px] text-white font-medium">{file.name}</span>
+              <span className="text-sm truncate max-w-[200px] text-white font-medium">
+                {file.name}
+              </span>
             </div>
-            <button 
-              onClick={removeFile} 
+            <button
+              onClick={removeFile}
               className="text-gray-400 hover:text-red-400 transition-colors p-1"
               disabled={isUploading}
             >
@@ -124,13 +134,13 @@ const ReportUploadCard = () => {
         )}
       </div>
 
-      <button 
+      <button
         disabled={!file || isUploading}
         onClick={handleUploadAndAnalyze}
         className={`w-full mt-4 py-2.5 font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 ${
           file && !isUploading
-            ? 'bg-mint text-navy hover:shadow-mint-glow cursor-pointer' 
-            : 'bg-navy-lightest text-gray-500 cursor-not-allowed'
+            ? "bg-mint text-navy hover:shadow-mint-glow cursor-pointer"
+            : "bg-navy-lightest text-gray-500 cursor-not-allowed"
         }`}
       >
         {isUploading ? (
@@ -139,7 +149,7 @@ const ReportUploadCard = () => {
             Analyzing...
           </>
         ) : (
-          'Analyze with AI'
+          "Analyze with AI"
         )}
       </button>
     </motion.div>
