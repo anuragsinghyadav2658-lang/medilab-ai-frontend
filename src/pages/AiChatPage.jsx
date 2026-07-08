@@ -154,10 +154,16 @@ const AiChatPage = () => {
 
   // --- MISSING REF & SCROLL LOGIC YAHAN ADD KARNA HAI ---
   const messagesEndRef = useRef(null);
+  const chatContainerRef = useRef(null); // Naya ref container ke liye
 
   // Auto-scroll to bottom whenever messages update
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   };
 
   useEffect(() => {
@@ -579,7 +585,10 @@ const AiChatPage = () => {
         </AnimatePresence>
 
         {/* Chat Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar relative z-0">
+        <div
+          ref={chatContainerRef}
+          className="flex-1 overflow-y-auto p-4 space-y-6 custom-scrollbar relative z-0"
+        >
           {messages.map((msg) => (
             <motion.div
               key={msg.id}
