@@ -443,7 +443,7 @@ const AiChatPage = () => {
               <motion.div
                 initial={{ opacity: 1 }}
                 exit={{ opacity: 0, transition: { duration: 0 } }}
-                className="absolute md:static inset-0 z-40 bg-black/50 md:bg-transparent backdrop-blur-[2px] md:backdrop-blur-none"
+                className="absolute inset-0 z-40 bg-black/50 md:bg-transparent backdrop-blur-[2px] md:backdrop-blur-none cursor-pointer"
                 onClick={() => setIsHistoryOpen(false)}
               ></motion.div>
 
