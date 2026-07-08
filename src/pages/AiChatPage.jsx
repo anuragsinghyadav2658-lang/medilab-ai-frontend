@@ -434,19 +434,20 @@ const AiChatPage = () => {
           {isHistoryOpen && (
             <>
               {/* NAYA OVERLAY: Screen par bahar kahin bhi click karne par panel close karne ke liye */}
-              <div
+              <motion.div
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0, transition: { duration: 0 } }}
                 className="absolute md:static inset-0 z-40 bg-black/50 md:bg-transparent backdrop-blur-[2px] md:backdrop-blur-none"
                 onClick={() => setIsHistoryOpen(false)}
-              ></div>
+              ></motion.div>
 
-                            <motion.div
+              <motion.div
                 initial={{ x: "100%", opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 exit={{ x: "100%", opacity: 0 }}
                 transition={{ type: "spring", damping: 25, stiffness: 200 }}
                 className="absolute top-0 right-0 h-full w-[85%] max-w-72 bg-navy-light border-l border-navy-lightest shadow-[0_0_40px_rgba(0,0,0,0.5)] md:shadow-[-10px_0_30px_rgba(0,0,0,0.15)] z-50 flex flex-col"
               >
-
                 {/* Panel Header */}
                 <div className="p-4 border-b border-navy-lightest flex items-center justify-between">
                   <h3 className="text-white font-bold flex items-center gap-2">
@@ -495,7 +496,7 @@ const AiChatPage = () => {
                           key={rowKey}
                           className="relative group w-full flex items-center"
                         >
-                                                    {/* Main Chat Load Button */}
+                          {/* Main Chat Load Button */}
                           <button
                             onClick={() => {
                               if (chat.id) loadChat(chat.id);
@@ -507,7 +508,6 @@ const AiChatPage = () => {
                                 : "bg-navy/30 border-transparent text-gray-400 hover:bg-navy-light hover:border-navy-lightest hover:text-gray-200"
                             }`}
                           >
-
                             <MessageSquare
                               size={16}
                               className={`flex-shrink-0 ${
