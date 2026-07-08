@@ -51,6 +51,13 @@ const AiChatPage = () => {
   // --- NAYA: Dropdown aur Delete Chat ka logic ---
   const [activeDropdown, setActiveDropdown] = useState(null);
 
+  // NAYA CODE: Screen par kahin bhi click hone par dropdown band karne ke liye
+  useEffect(() => {
+    const closeDropdown = () => setActiveDropdown(null);
+    document.addEventListener("click", closeDropdown);
+    return () => document.removeEventListener("click", closeDropdown);
+  }, []);
+
   const confirmDeleteChat = () => {
     setChatSessions((prev) => {
       // Exact ID se filter karega, koi undefined kachra nahi bachega
