@@ -33,9 +33,9 @@ const DashboardHome = () => {
       transition={{ duration: 0.6, ease: "easeOut" }}
       className="max-w-2xl mx-auto min-h-[80vh] flex flex-col justify-center items-center px-4"
     >
-      {/* Login Button for Non-Logged In Users (Top Right Corner) */}
+      {/* NAYA: Responsive Login Button */}
       {!isLoggedIn && (
-        <div className="absolute top-4 right-4 md:top-6 md:right-8 z-50">
+        <div className="w-full flex justify-end md:absolute md:top-6 md:right-8 z-50 mb-6 md:mb-0">
           <Link
             to="/login"
             className="flex items-center gap-2 px-6 py-2.5 bg-mint text-navy font-bold rounded-xl shadow-mint-glow hover:scale-105 transition-transform"
