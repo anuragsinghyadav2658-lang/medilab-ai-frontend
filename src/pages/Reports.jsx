@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import {
   Activity,
@@ -9,22 +10,60 @@ import {
   CheckCircle,
   AlertCircle,
   Loader2,
+  Edit2,
 } from "lucide-react";
 import { fetchReports } from "../services/api";
 
 const Reports = () => {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // Naye states: Clicked report aur View All button track karne ke liye
   const [selectedReport, setSelectedReport] = useState(null);
   const [showAllReports, setShowAllReports] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedDate, setSelectedDate] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedSummary, setEditedSummary] = useState("");
+
+  const handleEditClick = () => {
+    setEditedSummary(
+      selectedReport
+        ? selectedReport.aiSummary
+        : "Based on the latest comprehensive blood panel...",
+    );
+    setIsEditing(true);
+  };
+
+  const handleSaveClick = () => {
+    if (selectedReport) {
+      setSelectedReport({ ...selectedReport, aiSummary: editedSummary });
+    }
+    setIsEditing(false);
+  };
+
+  // Naya Filter Logic
+  const filteredReports = reports.filter((report) => {
+    const matchesSearch =
+      (report.fileName &&
+        report.fileName.toLowerCase().includes(searchQuery.toLowerCase())) ||
+      (report.id && report.id.toString().includes(searchQuery));
+
+    // Assuming backend returns date in 'createdAt' or 'date' field
+    const reportDate = report.createdAt || report.date || "";
+    const matchesDate = selectedDate ? reportDate.includes(selectedDate) : true;
+
+    return matchesSearch && matchesDate;
+  });
+
+  // Purane 'visibleReports' logic ko is naye filtered array par update karo
+  const visibleReports = showAllReports
+    ? filteredReports
+    : filteredReports.slice(0, 5);
 
   // Vitals State with fallback defaults
   const [vitals, setVitals] = useState([
     {
       name: "Heart Rate",
-      value: "72 bpm",
+      value: "00 bpm",
       status: "Normal",
       icon: Heart,
       color: "text-rose-400",
@@ -32,7 +71,7 @@ const Reports = () => {
     },
     {
       name: "Blood Pressure",
-      value: "120/80",
+      value: "00/80",
       status: "Optimal",
       icon: Activity,
       color: "text-mint",
@@ -40,7 +79,7 @@ const Reports = () => {
     },
     {
       name: "Blood Sugar",
-      value: "95 mg/dL",
+      value: "00 mg/dL",
       status: "Normal",
       icon: Droplet,
       color: "text-blue-400",
@@ -48,7 +87,7 @@ const Reports = () => {
     },
     {
       name: "Temperature",
-      value: "98.6 °F",
+      value: "00.0 °F",
       status: "Normal",
       icon: Thermometer,
       color: "text-orange-400",
@@ -128,6 +167,18 @@ const Reports = () => {
     );
   };
 
+  const handleWhatsAppShare = () => {
+    if (!selectedReport) return;
+    const patientPhone = selectedReport.patientPhone || "";
+    const summary =
+      selectedReport.aiSummary || "Check my latest medical report analysis.";
+    const encodedMessage = encodeURIComponent(summary);
+    window.open(
+      `https://wa.me/${patientPhone}?text=${encodedMessage}`,
+      "_blank",
+    );
+  };
+
   // Framer motion variants for seamless layout rendering
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -199,31 +250,47 @@ const Reports = () => {
             variants={itemVariants}
             className="sm:col-span-2 bg-glass-navy backdrop-blur-md border border-navy-lightest p-6 rounded-2xl shadow-glass mt-2"
           >
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
               <div className="flex items-center gap-2">
                 <h3 className="text-lg font-semibold text-white">
-                  Recent Uploads & Analysis
+                  Recent Uploads
                 </h3>
                 {loading && (
                   <Loader2 size={18} className="text-mint animate-spin" />
                 )}
               </div>
-              {/* Naya View All Logic Button */}
-              {reports.length > 5 && (
-                <button
-                  onClick={() => setShowAllReports(!showAllReports)}
-                  className="text-sm text-mint hover:underline focus:outline-none"
-                >
-                  {showAllReports ? "Show Less" : "Show All"}
-                </button>
-              )}
+
+              {/* Naya Search Bar & Date Picker */}
+              <div className="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
+                <input
+                  type="text"
+                  placeholder="Search Patient Name or ID..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="px-3 py-2 bg-navy-light border border-navy-lightest rounded-xl text-sm text-white placeholder-gray-500 focus:outline-none focus:border-mint transition-colors w-full sm:w-56"
+                />
+                <input
+                  type="date"
+                  value={selectedDate}
+                  onChange={(e) => setSelectedDate(e.target.value)}
+                  className="px-3 py-2 bg-navy-light border border-navy-lightest rounded-xl text-sm text-gray-300 focus:outline-none focus:border-mint transition-colors w-full sm:w-auto [color-scheme:dark]"
+                />
+                {filteredReports.length > 5 && (
+                  <button
+                    onClick={() => setShowAllReports(!showAllReports)}
+                    className="text-sm text-mint hover:underline focus:outline-none whitespace-nowrap ml-1"
+                  >
+                    {showAllReports ? "Show Less" : "Show All"}
+                  </button>
+                )}
+              </div>
             </div>
 
             {/* Main Scrollable Record Container mapping actual medical database records */}
             <div className="space-y-3 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
-              {!loading && reports.length === 0 ? (
+              {!loading && filteredReports.length === 0 ? (
                 <p className="text-gray-400 text-sm text-center py-4">
-                  No reports uploaded yet.
+                  No reports found for the selected filters.
                 </p>
               ) : (
                 visibleReports.map((report) => (
@@ -280,85 +347,89 @@ const Reports = () => {
             <div className="p-1.5 bg-mint text-navy rounded-md shadow-mint-glow">
               <Activity size={18} />
             </div>
-            <h2 className="text-xl font-bold text-white">Overall Summary</h2>
+            <h2 className="text-xl font-bold text-white flex-1">
+              Overall Summary
+            </h2>
+
+            {/* Edit Button */}
+            {!isEditing && (
+              <button
+                onClick={handleEditClick}
+                className="p-1.5 text-gray-400 hover:text-mint hover:bg-mint/10 rounded-lg transition-colors focus:outline-none"
+              >
+                <Edit2 size={18} />
+              </button>
+            )}
           </div>
 
           {/* Displays either default analytical placeholders or live real-time analysis payload based on Clicked Report */}
           <div className="flex-1 space-y-4 text-sm text-gray-300 max-h-[350px] overflow-y-auto custom-scrollbar pr-1">
-            {selectedReport ? (
-              <p className="whitespace-pre-wrap leading-relaxed bg-navy/40 p-3 rounded-xl border border-navy-lightest">
-                {selectedReport.aiSummary}
-              </p>
+            {isEditing ? (
+              <div className="flex flex-col gap-3">
+                <textarea
+                  value={editedSummary}
+                  onChange={(e) => setEditedSummary(e.target.value)}
+                  className="w-full h-48 p-3 bg-navy-light border border-mint/40 rounded-xl text-white focus:outline-none focus:border-mint resize-none custom-scrollbar"
+                  placeholder="Edit patient summary here..."
+                />
+                <div className="flex justify-end">
+                  <button
+                    onClick={handleSaveClick}
+                    className="px-5 py-2 bg-mint text-navy font-semibold rounded-lg hover:brightness-110 transition-all text-sm shadow-mint-glow"
+                  >
+                    Save
+                  </button>
+                </div>
+              </div>
             ) : (
               <>
-                <p>
-                  Based on the latest comprehensive blood panel, all vital signs
-                  are within the{" "}
-                  <strong className="text-mint">optimal range</strong>.
-                </p>
-                <p>
-                  Hemoglobin levels have improved since the last checkup.
-                  Cholesterol is well-managed, but maintaining a low-sodium diet
-                  is recommended to keep blood pressure at optimal levels.
-                </p>
+                {selectedReport ? (
+                  <p className="whitespace-pre-wrap leading-relaxed bg-navy/40 p-3 rounded-xl border border-navy-lightest">
+                    {selectedReport.aiSummary}
+                  </p>
+                ) : (
+                  <>
+                    <p>
+                      Based on the latest comprehensive blood panel, all vital
+                      signs are within the{" "}
+                      <strong className="text-mint">optimal range</strong>.
+                    </p>
+                    <p>
+                      Hemoglobin levels have improved since the last checkup.
+                      Cholesterol is well-managed, but maintaining a low-sodium
+                      diet is recommended to keep blood pressure at optimal
+                      levels.
+                    </p>
+                  </>
+                )}
+
+                <div className="mt-4 p-3 bg-orange-400/10 border border-orange-400/20 rounded-xl flex gap-3 text-orange-200">
+                  <AlertCircle
+                    size={18}
+                    className="text-orange-400 flex-shrink-0 mt-0.5"
+                  />
+                  <p className="text-xs">
+                    Vitamin D levels are slightly on the lower side. Consider 15
+                    mins of morning sun exposure.
+                  </p>
+                </div>
               </>
             )}
-
-            <div className="mt-4 p-3 bg-orange-400/10 border border-orange-400/20 rounded-xl flex gap-3 text-orange-200">
-              <AlertCircle
-                size={18}
-                className="text-orange-400 flex-shrink-0 mt-0.5"
-              />
-              <p className="text-xs">
-                Vitamin D levels are slightly on the lower side. Consider 15
-                mins of morning sun exposure.
-              </p>
-            </div>
           </div>
 
           {/* Buttons Container - Clean & Unified Style */}
-          <div className="flex gap-3 mt-6">
+          <div className="flex flex-wrap sm:flex-nowrap gap-3 mt-6">
             {/* Download Premium Report Button */}
             <button
               onClick={() => {
-                const report = selectedReport; // Ab ye usko download karega jo select hua hai
-                // Generating a beautifully formatted HTML report
+                const report = selectedReport;
                 const vitalsHtml = vitals
                   .map(
-                    (v) => `
-        <div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; width: 45%; margin-bottom: 15px;">
-          <h3 style="margin: 0 0 5px 0; color: #64748b; font-size: 14px;">${v.name}</h3>
-          <p style="margin: 0; font-size: 20px; font-weight: bold; color: #0f172a;">${v.value} <span style="font-size: 12px; color: #10b981;">(${v.status})</span></p>
-        </div>
-      `,
+                    (v) =>
+                      `<div style="border: 1px solid #e2e8f0; padding: 15px; border-radius: 8px; width: 45%; margin-bottom: 15px;"><h3 style="margin: 0 0 5px 0; color: #64748b; font-size: 14px;">${v.name}</h3><p style="margin: 0; font-size: 20px; font-weight: bold; color: #0f172a;">${v.value} <span style="font-size: 12px; color: #10b981;">(${v.status})</span></p></div>`,
                   )
                   .join("");
-
-                const htmlContent = `
-        <!DOCTYPE html>
-        <html>
-        <head><title>Medical Report</title></head>
-        <body style="font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; color: #1e293b;">
-          <div style="text-align: center; border-bottom: 2px solid #00E5FF; padding-bottom: 20px; margin-bottom: 30px;">
-            <h1 style="color: #0f172a; margin: 0;">MediLab AI</h1>
-            <p style="color: #64748b; margin-top: 5px;">Comprehensive Patient Medical Report</p>
-            <p style="font-size: 12px; color: #94a3b8;">Report ID: #${report?.id || "N/A"} | Date: ${new Date().toLocaleDateString()}</p>
-          </div>
-          <h2 style="color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">Vital Signs</h2>
-          <div style="display: flex; flex-wrap: wrap; justify-content: space-between;">
-            ${vitalsHtml}
-          </div>
-          <h2 style="color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-top: 30px;">AI Analysis Summary</h2>
-          <div style="background-color: #f8fafc; border-left: 4px solid #00E5FF; padding: 20px; border-radius: 0 8px 8px 0; line-height: 1.6;">
-            ${report?.aiSummary || "No analysis available."}
-          </div>
-          <div style="margin-top: 50px; text-align: center; font-size: 12px; color: #94a3b8;">
-            <p>Generated by MediLab AI Assistant. Please consult a doctor for clinical diagnosis.</p>
-          </div>
-        </body>
-        </html>
-      `;
-
+                const htmlContent = `<!DOCTYPE html><html><head><title>Medical Report</title></head><body style="font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; color: #1e293b;"><div style="text-align: center; border-bottom: 2px solid #00E5FF; padding-bottom: 20px; margin-bottom: 30px;"><h1 style="color: #0f172a; margin: 0;">MediLab AI</h1><p style="color: #64748b; margin-top: 5px;">Comprehensive Patient Medical Report</p><p style="font-size: 12px; color: #94a3b8;">Report ID: #${report?.id || "N/A"} | Date: ${new Date().toLocaleDateString()}</p></div><h2 style="color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px;">Vital Signs</h2><div style="display: flex; flex-wrap: wrap; justify-content: space-between;">${vitalsHtml}</div><h2 style="color: #0f172a; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-top: 30px;">AI Analysis Summary</h2><div style="background-color: #f8fafc; border-left: 4px solid #00E5FF; padding: 20px; border-radius: 0 8px 8px 0; line-height: 1.6;">${report?.aiSummary || "No analysis available."}</div><div style="margin-top: 50px; text-align: center; font-size: 12px; color: #94a3b8;"><p>Generated by MediLab AI Assistant. Please consult a doctor for clinical diagnosis.</p></div></body></html>`;
                 const blob = new Blob([htmlContent], { type: "text/html" });
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement("a");
@@ -371,7 +442,7 @@ const Reports = () => {
               Download Report
             </button>
 
-            {/* Share with Doctor Button */}
+            {/* Share with Patient Button */}
             <button
               onClick={async () => {
                 try {
@@ -388,7 +459,16 @@ const Reports = () => {
               }}
               className="flex-1 py-2.5 bg-transparent border border-mint text-mint font-medium rounded-xl hover:bg-mint hover:text-navy transition-all duration-300"
             >
-              Share with Doctor
+              Share with Patient
+            </button>
+
+            {/* WhatsApp Share Button */}
+            <button
+              onClick={handleWhatsAppShare}
+              className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#25D366] text-white font-medium rounded-xl hover:bg-[#1ebe57] transition-all duration-300 shadow-lg"
+            >
+              <MessageCircle size={18} />
+              WhatsApp
             </button>
           </div>
         </motion.div>

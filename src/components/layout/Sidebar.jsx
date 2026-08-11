@@ -1,11 +1,6 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import {
-  LayoutDashboard,
-  FileText,
-  MessageSquare,
-  Settings,
-} from "lucide-react";
+import { LayoutDashboard, FileText, Settings } from "lucide-react";
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -13,7 +8,6 @@ const Sidebar = () => {
   const menuItems = [
     { name: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
     { name: "Reports", icon: FileText, path: "/reports" },
-    { name: "AI Chat", icon: MessageSquare, path: "/chat" },
     { name: "Settings", icon: Settings, path: "/settings" },
   ];
 

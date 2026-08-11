@@ -4,9 +4,7 @@ import Sidebar from './components/layout/Sidebar';
 import DashboardHome from "./pages/DashboardHome";
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
-import AiChatPage from './pages/AiChatPage';
-import Login from './pages/Login'; // Login Import kar liya
-import AIChatModal from './components/chat/AIChatModal'; 
+import Login from './pages/Login'; 
 
 const AppContent = () => {
   const location = useLocation();
@@ -35,15 +33,9 @@ const AppContent = () => {
           {/* Reports List & Detail Route */}
           <Route path="/reports" element={<Reports />} />
           
-          {/* Naya Dedicated AI Chat Route */}
-          <Route path="/chat" element={<AiChatPage />} />
-          
           {/* Settings Route */}
           <Route path="/settings" element={<Settings />} />
         </Routes>
-
-        {/* Floating AI Chat Widget sirf Dashboard par dikhega */}
-        {location.pathname === '/dashboard' && <AIChatModal />}
       </main>
 
     </div>
