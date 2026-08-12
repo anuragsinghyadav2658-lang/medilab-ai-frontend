@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReportUploadCard from "../components/dashboard/ReportUploadCard";
-import { getLatestReport } from "../services/api";
 import { getLatestReport, createPatient } from "../services/api";
 
 const DashboardHome = () => {
