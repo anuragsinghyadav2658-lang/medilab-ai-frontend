@@ -3,6 +3,8 @@ import { UploadCloud, File, X, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { uploadReport } from "../../services/api";
 
+const [dragActive, setDragActive] = useState(false);
+
 const ReportUploadCard = ({ patientId }) => {
   // NAYA: patientId prop receive kiya
   // ... existing states (dragActive, file, isUploading) ...
