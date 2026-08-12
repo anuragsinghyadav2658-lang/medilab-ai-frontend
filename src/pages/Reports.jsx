@@ -170,10 +170,15 @@ const Reports = () => {
 
   const handleWhatsAppShare = () => {
     if (!selectedReport) return;
-    const patientPhone = selectedReport.patientPhone || "";
+
+    const patientName = selectedReport.patientName || "Patient";
+    const patientPhone = selectedReport.patientPhone || ""; // Ensure country code is handled in DB or add here like `91${patientPhone}` if needed
     const summary =
       selectedReport.aiSummary || "Check my latest medical report analysis.";
-    const encodedMessage = encodeURIComponent(summary);
+
+    const rawMessage = `Hello ${patientName}, Aapki medical report ka analysis ready hai. Summary: \n\n${summary}`;
+    const encodedMessage = encodeURIComponent(rawMessage);
+
     window.open(
       `https://wa.me/${patientPhone}?text=${encodedMessage}`,
       "_blank",
