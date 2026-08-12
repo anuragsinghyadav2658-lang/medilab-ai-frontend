@@ -3,52 +3,6 @@ import { UploadCloud, File, X, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { uploadReport } from "../../services/api";
 
-const ReportUploadCard = () => {
-  const [dragActive, setDragActive] = useState(false);
-  const [file, setFile] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
-
-  const inputRef = useRef(null);
-
-  const handleDrag = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true);
-    } else if (e.type === "dragleave") {
-      setDragActive(false);
-    }
-  };
-
-  const handleDrop = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDragActive(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setFile(e.dataTransfer.files[0]);
-    }
-  };
-
-  const handleChange = (e) => {
-    e.preventDefault();
-    if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0]);
-    }
-  };
-
-  const onButtonClick = () => {
-    if (inputRef.current) {
-      inputRef.current.click();
-    }
-  };
-
-  const removeFile = (e) => {
-    e.stopPropagation();
-    setFile(null);
-    if (inputRef.current) inputRef.current.value = "";
-  };
-};
-
 const ReportUploadCard = ({ patientId }) => {
   // NAYA: patientId prop receive kiya
   // ... existing states (dragActive, file, isUploading) ...
