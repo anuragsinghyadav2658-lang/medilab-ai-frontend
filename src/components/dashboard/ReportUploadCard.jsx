@@ -47,26 +47,27 @@ const ReportUploadCard = () => {
     setFile(null);
     if (inputRef.current) inputRef.current.value = "";
   };
+};
 
-  // API Call logic - Ab JSON ki jagah FormData use ho raha hai
+const ReportUploadCard = ({ patientId }) => {
+  // NAYA: patientId prop receive kiya
+  // ... existing states (dragActive, file, isUploading) ...
+
   const handleUploadAndAnalyze = async () => {
     if (!file) return;
+    if (!patientId) {
+      alert("Please select or create a patient first!");
+      return;
+    }
 
     setIsUploading(true);
     try {
-      // Asli file ko FormData me append karna
-      const formData = new FormData();
-      formData.append("file", file);
+      // Updated API call
+      await uploadReport(file, patientId);
 
-      await uploadReport(formData);
-
-      // NAYI LINE: Upload hote hi file ka naam localStorage me save kar do
-      // Taaki AI Chat bina single click kiye turant isko pakad le!
       localStorage.setItem("medilab_uploaded_report_name", file.name);
-
       alert("Report Uploaded & Analyzed Successfully!");
 
-      // Success ke baad UI reset karna
       setFile(null);
       if (inputRef.current) inputRef.current.value = "";
     } catch (error) {

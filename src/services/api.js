@@ -3,8 +3,12 @@ import axios from "axios";
 const BASE_URL = "https://medilab-ai-backend.onrender.com/api/reports";
 
 // 1. Nayi actual file (PDF/Image) backend me save karne ke liye
-export const uploadReport = async (formData) => {
+export const uploadReport = async (file, patientId) => {
   try {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("patientId", patientId);
+
     const response = await axios.post(`${BASE_URL}/upload`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
