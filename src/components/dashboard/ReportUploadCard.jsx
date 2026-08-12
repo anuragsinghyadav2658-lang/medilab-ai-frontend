@@ -3,12 +3,51 @@ import { UploadCloud, File, X, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { uploadReport } from "../../services/api";
 
-const [dragActive, setDragActive] = useState(false);
-
 const ReportUploadCard = ({ patientId }) => {
-  // NAYA: patientId prop receive kiya
-  // ... existing states (dragActive, file, isUploading) ...
+  // Saare states component ke andar hi rahenge
+  const [dragActive, setDragActive] = useState(false);
+  const [file, setFile] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
+  const inputRef = useRef(null);
 
+  // Drag and Drop Logic
+  const handleDrag = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setFile(e.dataTransfer.files[0]);
+    }
+  };
+
+  const handleChange = function(e) {
+    e.preventDefault();
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const onButtonClick = () => {
+    inputRef.current.click();
+  };
+
+  const removeFile = (e) => {
+    e.stopPropagation();
+    setFile(null);
+    if (inputRef.current) inputRef.current.value = "";
+  };
+
+  // Upload Logic
   const handleUploadAndAnalyze = async () => {
     if (!file) return;
     if (!patientId) {
@@ -18,7 +57,7 @@ const ReportUploadCard = ({ patientId }) => {
 
     setIsUploading(true);
     try {
-      // Updated API call
+      // Updated API call jisme file ke sath patientId bhi jayega
       await uploadReport(file, patientId);
 
       localStorage.setItem("medilab_uploaded_report_name", file.name);
