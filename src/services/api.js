@@ -2,6 +2,18 @@ import axios from "axios";
 
 const BASE_URL = "https://medilab-ai-backend.onrender.com/api/reports";
 
+const PATIENT_URL = "https://medilab-ai-backend.onrender.com/api/patients";
+
+export const createPatient = async (patientData) => {
+  try {
+    const response = await axios.post(PATIENT_URL, patientData);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating patient:", error);
+    throw error;
+  }
+};
+
 // 1. Nayi actual file (PDF/Image) backend me save karne ke liye
 export const uploadReport = async (file, patientId) => {
   try {

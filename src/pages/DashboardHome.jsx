@@ -1,10 +1,9 @@
-// File: src/pages/DashboardHome.jsx
-
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ReportUploadCard from "../components/dashboard/ReportUploadCard";
 import { getLatestReport } from "../services/api";
+import { getLatestReport, createPatient } from "../services/api";
 
 const DashboardHome = () => {
   const isLoggedIn = localStorage.getItem("token");
@@ -40,15 +39,20 @@ const DashboardHome = () => {
     setPatientForm({ ...patientForm, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("New Patient Data Submitted:", patientForm);
+    try {
+      // API call to create patient in database
+      const newPatient = await createPatient(patientForm);
 
-    // NAYA CODE: Abhi ke liye ek Dummy ID de rahe hain taaki popup hat jaye
-    setCurrentPatientId(1);
-
-    setPatientCreated(true);
-    setShowModal(false);
+      // Backend se aayi actual ID set karna
+      setCurrentPatientId(newPatient.id);
+      setPatientCreated(true);
+      setShowModal(false);
+    } catch (error) {
+      console.error("Failed to create patient:", error);
+      alert("Error creating patient. Please try again.");
+    }
   };
 
   return (
