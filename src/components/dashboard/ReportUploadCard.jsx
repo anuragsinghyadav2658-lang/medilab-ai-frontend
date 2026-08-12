@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import { UploadCloud, File, X, Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { uploadReport } from "../../services/api";
-import React, { useState } from 'react';
 
 const [dragActive, setDragActive] = useState(false);
 
