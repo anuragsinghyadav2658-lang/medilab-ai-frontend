@@ -14,6 +14,7 @@ const DashboardHome = () => {
   // New UI State
   const [showModal, setShowModal] = useState(false);
   const [patientCreated, setPatientCreated] = useState(false);
+  const [currentPatientId, setCurrentPatientId] = useState(null); // <--- YE NAYI LINE ADD KI HAI
   const [patientForm, setPatientForm] = useState({
     name: "",
     age: "",
@@ -42,6 +43,10 @@ const DashboardHome = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("New Patient Data Submitted:", patientForm);
+
+    // NAYA CODE: Abhi ke liye ek Dummy ID de rahe hain taaki popup hat jaye
+    setCurrentPatientId(1);
+
     setPatientCreated(true);
     setShowModal(false);
   };
@@ -81,7 +86,8 @@ const DashboardHome = () => {
               onClick={() => setShowModal(true)}
               className="w-full py-5 text-xl bg-mint text-navy font-bold rounded-2xl shadow-mint-glow hover:scale-[1.02] transition-transform flex justify-center items-center gap-3"
             >
-              <span className="text-3xl leading-none mb-1">+</span> Add New Patient
+              <span className="text-3xl leading-none mb-1">+</span> Add New
+              Patient
             </button>
           ) : (
             <motion.div
@@ -89,7 +95,8 @@ const DashboardHome = () => {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.4 }}
             >
-              <ReportUploadCard />
+              {/* NAYA CODE: patientId pass kar diya */}
+              <ReportUploadCard patientId={currentPatientId} />
             </motion.div>
           )}
         </div>
@@ -133,11 +140,15 @@ const DashboardHome = () => {
               exit={{ scale: 0.9, y: 20 }}
               className="bg-navy border border-navy-lightest rounded-2xl p-6 w-full max-w-md shadow-2xl"
             >
-              <h2 className="text-2xl font-bold text-mint mb-6">Add New Patient</h2>
-              
+              <h2 className="text-2xl font-bold text-mint mb-6">
+                Add New Patient
+              </h2>
+
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Patient Name</label>
+                  <label className="block text-sm text-gray-400 mb-1">
+                    Patient Name
+                  </label>
                   <input
                     type="text"
                     name="name"
@@ -148,9 +159,11 @@ const DashboardHome = () => {
                     placeholder="Enter full name"
                   />
                 </div>
-                
+
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Age</label>
+                  <label className="block text-sm text-gray-400 mb-1">
+                    Age
+                  </label>
                   <input
                     type="number"
                     name="age"
@@ -164,7 +177,9 @@ const DashboardHome = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Phone Number</label>
+                  <label className="block text-sm text-gray-400 mb-1">
+                    Phone Number
+                  </label>
                   <input
                     type="tel"
                     name="phone"
@@ -177,7 +192,9 @@ const DashboardHome = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Address</label>
+                  <label className="block text-sm text-gray-400 mb-1">
+                    Address
+                  </label>
                   <textarea
                     name="address"
                     required
