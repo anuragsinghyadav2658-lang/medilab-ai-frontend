@@ -1,5 +1,3 @@
-// File: src/components/reports/ReportPrint.jsx
-
 import React from "react";
 
 const ReportPrint = ({

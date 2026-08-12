@@ -195,9 +195,6 @@ const Reports = () => {
     show: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
-  // View All toggle ke hisab se reports filter karo (max 5 ya sabhi)
-  const visibleReports = showAllReports ? reports : reports.slice(0, 5);
-
   return (
     <div className="max-w-6xl mx-auto">
       {/* Header Section */}
