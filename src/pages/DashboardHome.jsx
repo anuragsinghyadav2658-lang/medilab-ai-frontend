@@ -132,10 +132,10 @@ const DashboardHome = () => {
       <AnimatePresence>
         {showModal && (
           <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 backdrop-blur-sm px-4"
+            initial={{ scale: 0.9, y: 20 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.9, y: 20 }}
+            className="bg-navy border border-navy-lightest rounded-2xl p-6 w-[95%] max-w-md mx-auto shadow-2xl"
           >
             <motion.div
               initial={{ scale: 0.9, y: 20 }}

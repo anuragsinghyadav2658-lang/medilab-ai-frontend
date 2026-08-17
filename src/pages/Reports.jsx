@@ -221,8 +221,9 @@ const Reports = () => {
           className="flex flex-col gap-6"
         >
           {/* Left Side: Dynamic Metric Cards & Historical Database Uploads */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {/* Dynamic Vitals Tracking Display Blocks */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {/* Dynamic Vitals Tracking Display Blocks yahan map ho rahe hain */}
+
             {vitals.map((vital, index) => {
               const Icon = vital.icon;
               return (
@@ -254,7 +255,7 @@ const Reports = () => {
             {/* Recent Uploads Grid Controller */}
             <motion.div
               variants={itemVariants}
-              className="sm:col-span-2 bg-glass-navy backdrop-blur-md border border-navy-lightest p-6 rounded-2xl shadow-glass mt-2"
+              className="sm:col-span-2 lg:col-span-4 bg-glass-navy backdrop-blur-md border border-navy-lightest p-6 rounded-2xl shadow-glass mt-2"
             >
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
                 <div className="flex items-center gap-2">
@@ -424,11 +425,11 @@ const Reports = () => {
             </div>
 
             {/* Buttons Container - Clean & Unified Style */}
-            <div className="flex flex-wrap sm:flex-nowrap gap-3 mt-6">
+            <div className="flex flex-col sm:flex-row w-full gap-3 mt-6">
               {/* Print Report Button */}
               <button
                 onClick={() => window.print()}
-                className="flex-1 py-2.5 bg-transparent border border-mint text-mint font-medium rounded-xl hover:bg-mint hover:text-navy transition-all duration-300"
+                className="flex-1 w-full py-2.5 bg-transparent border border-mint text-mint font-medium rounded-xl hover:bg-mint hover:text-navy transition-all duration-300"
               >
                 Print Report
               </button>
@@ -448,7 +449,7 @@ const Reports = () => {
                     alert("Sharing not supported on this browser.");
                   }
                 }}
-                className="flex-1 py-2.5 bg-transparent border border-mint text-mint font-medium rounded-xl hover:bg-mint hover:text-navy transition-all duration-300"
+                className="flex-1 w-full py-2.5 bg-transparent border border-mint text-mint font-medium rounded-xl hover:bg-mint hover:text-navy transition-all duration-300"
               >
                 Share with Patient
               </button>
@@ -456,7 +457,7 @@ const Reports = () => {
               {/* WhatsApp Share Button */}
               <button
                 onClick={handleWhatsAppShare}
-                className="flex items-center justify-center gap-2 px-5 py-2.5 bg-[#25D366] text-white font-medium rounded-xl hover:bg-[#1ebe57] transition-all duration-300 shadow-lg"
+                className="flex-1 w-full flex items-center justify-center gap-2 px-5 py-2.5 bg-[#25D366] text-white font-medium rounded-xl hover:bg-[#1ebe57] transition-all duration-300 shadow-lg"
               >
                 <MessageCircle size={18} />
                 WhatsApp
