@@ -31,23 +31,6 @@ const Settings = () => {
 
   const [hasChanges, setHasChanges] = useState(false);
 
-  const [clinicDetails, setClinicDetails] = useState({
-    logoUrl: "",
-    clinicName: "",
-    doctorName: "",
-  });
-
-  const handleClinicChange = (e) => {
-    const { name, value } = e.target;
-    setClinicDetails((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const saveClinicDetails = () => {
-    // API integration ke aane tak abhi ke liye localStorage use kar rahe hain
-    localStorage.setItem("clinicDetails", JSON.stringify(clinicDetails));
-    alert("Clinic print details saved successfully!");
-  };
-
   // Page load hote hi backend se user ki detail laane ka logic
   useEffect(() => {
     const fetchProfile = async () => {
@@ -310,59 +293,61 @@ const Settings = () => {
           </div>
         </div>
 
-        {/* Clinic Print Details Section */}
+        {/* Notifications Section */}
         <div className="bg-glass-navy backdrop-blur-md border border-navy-lightest rounded-2xl p-6 shadow-glass">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-            <h2 className="text-lg font-semibold text-mint flex items-center gap-2">
-              Clinic Print Details
-            </h2>
-            <button
-              onClick={saveClinicDetails}
-              className="flex items-center justify-center gap-2 bg-mint text-navy px-5 py-2.5 rounded-xl font-bold hover:bg-mint/90 transition-all text-sm shadow-mint-glow w-full sm:w-auto"
-            >
-              <Save size={16} /> Save Settings
-            </button>
-          </div>
+          <h2 className="text-lg font-semibold text-mint flex items-center gap-2 mb-6">
+            <Bell size={20} /> Notifications & Preferences
+          </h2>
+          <div className="space-y-4">
+            <div className="flex items-center justify-between p-4 bg-navy border border-navy-lightest rounded-xl">
+              <div>
+                <h3 className="text-white font-medium">Email Alerts</h3>
+                <p className="text-sm text-gray-400">
+                  Receive medical report summaries via email.
+                </p>
+              </div>
+              <button
+                onClick={toggleEmailAlerts}
+                className={`w-12 h-6 rounded-full transition-colors relative flex items-center focus:outline-none ${emailAlerts ? "bg-mint" : "bg-gray-600"}`}
+              >
+                <div
+                  className={`w-4 h-4 bg-navy rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${emailAlerts ? "translate-x-7" : "translate-x-1"}`}
+                />
+              </button>
+            </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="md:col-span-2">
-              <label className="block text-sm text-gray-400 mb-2">
-                Clinic Logo URL
-              </label>
-              <input
-                type="text"
-                name="logoUrl"
-                value={clinicDetails.logoUrl}
-                onChange={handleClinicChange}
-                placeholder="https://link-to-your-logo.com/logo.png"
-                className="w-full bg-navy border border-navy-lightest rounded-xl px-4 py-3 text-white focus:border-mint focus:outline-none transition-colors"
-              />
+            <div className="flex items-center justify-between p-4 bg-navy border border-navy-lightest rounded-xl">
+              <div>
+                <h3 className="text-white font-medium">SMS Notifications</h3>
+                <p className="text-sm text-gray-400">
+                  Get text alerts when AI analysis is complete.
+                </p>
+              </div>
+              <button
+                onClick={() => setSmsAlerts(!smsAlerts)}
+                className={`w-12 h-6 rounded-full transition-colors relative flex items-center focus:outline-none ${smsAlerts ? "bg-mint" : "bg-gray-600"}`}
+              >
+                <div
+                  className={`w-4 h-4 bg-navy rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${smsAlerts ? "translate-x-7" : "translate-x-1"}`}
+                />
+              </button>
             </div>
-            <div>
-              <label className="block text-sm text-gray-400 mb-2">
-                Clinic Name
-              </label>
-              <input
-                type="text"
-                name="clinicName"
-                value={clinicDetails.clinicName}
-                onChange={handleClinicChange}
-                placeholder="e.g. MediCare Clinic"
-                className="w-full bg-navy border border-navy-lightest rounded-xl px-4 py-3 text-white focus:border-mint focus:outline-none transition-colors"
-              />
-            </div>
-            <div>
-              <label className="block text-sm text-gray-400 mb-2">
-                Doctor Name
-              </label>
-              <input
-                type="text"
-                name="doctorName"
-                value={clinicDetails.doctorName}
-                onChange={handleClinicChange}
-                placeholder="e.g. Dr. Sharma"
-                className="w-full bg-navy border border-navy-lightest rounded-xl px-4 py-3 text-white focus:border-mint focus:outline-none transition-colors"
-              />
+
+            <div className="flex items-center justify-between p-4 bg-navy border border-navy-lightest rounded-xl">
+              <div>
+                <h3 className="text-white font-medium">Auto AI Analysis</h3>
+                <p className="text-sm text-gray-400">
+                  Automatically analyze reports upon upload.
+                </p>
+              </div>
+              <button
+                onClick={() => setAutoAnalysis(!autoAnalysis)}
+                className={`w-12 h-6 rounded-full transition-colors relative flex items-center focus:outline-none ${autoAnalysis ? "bg-mint" : "bg-gray-600"}`}
+              >
+                <div
+                  className={`w-4 h-4 bg-navy rounded-full shadow-md transform transition-transform duration-300 ease-in-out ${autoAnalysis ? "translate-x-7" : "translate-x-1"}`}
+                />
+              </button>
             </div>
           </div>
         </div>
