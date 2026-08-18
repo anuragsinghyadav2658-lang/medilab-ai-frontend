@@ -23,6 +23,18 @@ const Settings = () => {
     setClinicDetails((prev) => ({ ...prev, [name]: value }));
   };
 
+  // NAYA CODE: Gallery se photo select karke URL me convert karne ke liye
+  const handleLogoUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setClinicDetails((prev) => ({ ...prev, logoUrl: reader.result }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const saveClinicDetails = () => {
     // Abhi local storage use kar rahe hain print ke liye
     localStorage.setItem("clinicDetails", JSON.stringify(clinicDetails));
@@ -286,20 +298,26 @@ const Settings = () => {
                 />
               </div>
             </div>
+
+            {/* Clinic Logo Upload Section - Ise replace karna hai */}
             <div className="md:col-span-2">
               <label className="block text-sm text-gray-400 mb-2">
-                Phone Number
+                Clinic Logo (Upload Image)
               </label>
-              <div className="relative w-full md:w-1/2 pr-0 md:pr-3">
-                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                  <Smartphone size={16} className="text-gray-500" />
-                </div>
+              <div className="flex items-center gap-4">
+                {/* Agar logo uploaded hai toh chhota sa preview dikhayega */}
+                {clinicDetails.logoUrl && (
+                  <img
+                    src={clinicDetails.logoUrl}
+                    alt="Clinic Logo Preview"
+                    className="h-12 w-12 object-contain bg-white rounded-lg p-1 border border-navy-lightest"
+                  />
+                )}
                 <input
-                  type="text"
-                  name="phone"
-                  value={editedProfile.phone}
-                  onChange={handleProfileChange}
-                  className="w-full bg-navy border border-navy-lightest rounded-xl pl-10 pr-4 py-3 text-white focus:border-mint focus:outline-none transition-colors"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleLogoUpload}
+                  className="w-full bg-navy border border-navy-lightest rounded-xl px-4 py-2.5 text-gray-400 file:mr-4 file:py-1.5 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-bold file:bg-mint file:text-navy hover:file:bg-mint/90 transition-colors cursor-pointer focus:outline-none"
                 />
               </div>
             </div>
