@@ -12,6 +12,7 @@ import {
   AlertCircle,
   Loader2,
   Edit2,
+  useEffect,
 } from "lucide-react";
 import { fetchReports } from "../services/api";
 
@@ -24,6 +25,14 @@ const Reports = () => {
   const [selectedDate, setSelectedDate] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [editedSummary, setEditedSummary] = useState("");
+  const [clinicDetails, setClinicDetails] = useState(null);
+
+  useEffect(() => {
+    const storedDetails = localStorage.getItem("clinicDetails");
+    if (storedDetails) {
+      setClinicDetails(JSON.parse(storedDetails));
+    }
+  }, []);
 
   const handleEditClick = () => {
     setEditedSummary(
@@ -467,9 +476,10 @@ const Reports = () => {
         </motion.div>
       </div>
 
-      {/* Print Layout - Sirf Print karte waqt UI par aayega */}
-      <div className="hidden print:block print:w-full print:absolute print:top-0 print:left-0 bg-white">
+      {/* Print Layout - Super Top Layer par force kiya hai taaki Sidebar na dikhe */}
+      <div className="hidden print:block print:fixed print:inset-0 print:z-[9999] print:bg-white print:w-full print:h-full print:m-0 print:p-0">
         <ReportPrint
+          clinicDetails={clinicDetails || undefined}
           patientDetails={{
             name: selectedReport?.patientName || "Patient",
             age: selectedReport?.patientAge || "N/A",
