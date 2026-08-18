@@ -298,7 +298,41 @@ const Settings = () => {
                 />
               </div>
             </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm text-gray-400 mb-2">
+                Phone Number
+              </label>
+              <div className="relative w-full md:w-1/2 pr-0 md:pr-3">
+                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                  <Smartphone size={16} className="text-gray-500" />
+                </div>
+                <input
+                  type="text"
+                  name="phone"
+                  value={editedProfile.phone}
+                  onChange={handleProfileChange}
+                  className="w-full bg-navy border border-navy-lightest rounded-xl pl-10 pr-4 py-3 text-white focus:border-mint focus:outline-none transition-colors"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
 
+        {/* Clinic Print Details Section */}
+        <div className="bg-glass-navy backdrop-blur-md border border-navy-lightest rounded-2xl p-6 shadow-glass mb-6">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <h2 className="text-lg font-semibold text-mint flex items-center gap-2">
+              Clinic Print Details
+            </h2>
+            <button
+              onClick={saveClinicDetails}
+              className="flex items-center justify-center gap-2 bg-mint text-navy px-5 py-2.5 rounded-xl font-bold hover:bg-mint/90 transition-all text-sm shadow-mint-glow w-full sm:w-auto"
+            >
+              <Save size={16} /> Save Settings
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Clinic Logo Upload Section - Ise replace karna hai */}
             <div className="md:col-span-2">
               <label className="block text-sm text-gray-400 mb-2">
@@ -321,37 +355,7 @@ const Settings = () => {
                 />
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Clinic Print Details Section */}
-        <div className="bg-glass-navy backdrop-blur-md border border-navy-lightest rounded-2xl p-6 shadow-glass mb-6">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-            <h2 className="text-lg font-semibold text-mint flex items-center gap-2">
-              Clinic Print Details
-            </h2>
-            <button
-              onClick={saveClinicDetails}
-              className="flex items-center justify-center gap-2 bg-mint text-navy px-5 py-2.5 rounded-xl font-bold hover:bg-mint/90 transition-all text-sm shadow-mint-glow w-full sm:w-auto"
-            >
-              <Save size={16} /> Save Settings
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="md:col-span-2">
-              <label className="block text-sm text-gray-400 mb-2">
-                Clinic Logo URL
-              </label>
-              <input
-                type="text"
-                name="logoUrl"
-                value={clinicDetails.logoUrl}
-                onChange={handleClinicChange}
-                placeholder="e.g. https://link-to-your-logo.com/logo.png"
-                className="w-full bg-navy border border-navy-lightest rounded-xl px-4 py-3 text-white focus:border-mint focus:outline-none transition-colors"
-              />
-            </div>
             <div>
               <label className="block text-sm text-gray-400 mb-2">
                 Clinic Name
