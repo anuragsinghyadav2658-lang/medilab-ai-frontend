@@ -12,7 +12,6 @@ import {
   AlertCircle,
   Loader2,
   Edit2,
-  useEffect,
 } from "lucide-react";
 import { fetchReports } from "../services/api";
 
